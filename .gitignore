@@ -1,3 +1,6 @@
 # IDE Settings
 .vscode/
 .idea/
+
+# compiled binaries
+usbtree
