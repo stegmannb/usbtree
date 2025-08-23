@@ -1,6 +1,33 @@
 # IDE Settings
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# compiled binaries
+# Compiled binaries
 usbtree
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Go vendor directory
+vendor/
+
+# macOS
+.DS_Store
+
+# Nix build results
+result
+result-*
+
+# Development environments
+.claude/
+.direnv/
+*.private

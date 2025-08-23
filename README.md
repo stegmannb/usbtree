@@ -2,6 +2,8 @@
 
 A cross-platform CLI tool that displays connected USB devices in a hierarchical tree structure. Works on both macOS and Linux systems.
 
+> 🤖 **Built with Claude.ai** - This project was developed with the assistance of Claude.
+
 ## Features
 
 - Tree view visualization of USB device hierarchy
