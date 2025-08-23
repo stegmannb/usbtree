@@ -10,7 +10,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        
+
         # Main package definition
         usbtree = pkgs.buildGoModule {
           pname = "usbtree";
@@ -62,15 +62,15 @@
             gotools
             go-tools
             delve
-            
+
             # Build dependencies
             libusb1
             pkg-config
-            
+
             # Additional dev tools
             git
           ];
-          
+
           shellHook = ''
             echo "╔══════════════════════════════════════╗"
             echo "║   USBTree Development Environment    ║"
@@ -110,14 +110,15 @@
 
         # Checks - run tests
         checks = {
-          usbtree-tests = pkgs.runCommand "usbtree-tests" {
-            nativeBuildInputs = with pkgs; [
-              go
-              pkg-config
-            ];
-            buildInputs = [ pkgs.libusb1 ];
-            src = ./.;
-          } ''
+          usbtree-tests = pkgs.runCommand "usbtree-tests"
+            {
+              nativeBuildInputs = with pkgs; [
+                go
+                pkg-config
+              ];
+              buildInputs = [ pkgs.libusb1 ];
+              src = ./.;
+            } ''
             cd $src
             export CGO_ENABLED=1
             export PKG_CONFIG_PATH="${pkgs.libusb1.dev}/lib/pkgconfig"
