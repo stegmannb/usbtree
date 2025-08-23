@@ -197,5 +197,4 @@ Future releases can be distributed via:
 - The application only reads device metadata, no data transfer
 - No network communication or external dependencies
 - Input validation on all user-provided filter strings
-- Adhere to the Conventional Commits specification if nothing else is specified 
- https://www.conventionalcommits.org/en/v1.0.0/#specification
+- Adhere to the Conventional Commits specification https://www.conventionalcommits.org/en/v1.0.0/#specification
