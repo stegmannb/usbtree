@@ -198,3 +198,7 @@ Future releases can be distributed via:
 - No network communication or external dependencies
 - Input validation on all user-provided filter strings
 - Adhere to the Conventional Commits specification https://www.conventionalcommits.org/en/v1.0.0/#specification
+
+## Development Environment
+
+- Use the Nix development environment for Go development
