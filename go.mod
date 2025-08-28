@@ -4,7 +4,6 @@ go 1.24
 
 require (
 	github.com/fatih/color v1.18.0
-	github.com/google/gousb v1.1.3
 	github.com/spf13/cobra v1.9.1
 )
 
