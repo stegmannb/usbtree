@@ -6,20 +6,22 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/user/usbtree/internal/models"
-	"github.com/user/usbtree/internal/tree"
-	"github.com/user/usbtree/internal/usb"
+	"github.com/stegmannb/usbtree/internal/models"
+	"github.com/stegmannb/usbtree/internal/tree"
+	"github.com/stegmannb/usbtree/internal/usb"
 )
 
 var (
 	jsonOutput bool
 	verbose    bool
 	filter     string
+	version    string = "dev" // Set via ldflags during build
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "usbtree",
-	Short: "Display USB devices in a tree view",
+	Use:     "usbtree",
+	Short:   "Display USB devices in a tree view",
+	Version: version,
 	Long: `USBTree is a cross-platform CLI tool that displays connected USB devices
 in a hierarchical tree structure. It works on both macOS and Linux systems.`,
 	RunE: func(cmd *cobra.Command, args []string) error {

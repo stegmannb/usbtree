@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/fatih/color"
-	"github.com/user/usbtree/internal/models"
+	"github.com/stegmannb/usbtree/internal/models"
 )
 
 func TestNewPrinter(t *testing.T) {

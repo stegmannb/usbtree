@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/user/usbtree/internal/models"
+	"github.com/stegmannb/usbtree/internal/models"
 )
 
 type Formatter struct {
