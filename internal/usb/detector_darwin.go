@@ -20,14 +20,14 @@ func newPlatformDetector() Detector {
 }
 
 func (d *darwinDetector) GetDevices() ([]*models.USBDevice, error) {
-	// Try libusb first
-	devices, err := d.getDevicesViaLibusb()
+	// On macOS, prefer system_profiler as it provides more reliable device detection
+	devices, err := d.getDevicesViaSystemProfiler()
 	if err == nil {
 		return devices, nil
 	}
 
-	// If libusb fails, try system_profiler
-	return d.getDevicesViaSystemProfiler()
+	// Fallback to libusb if system_profiler fails
+	return d.getDevicesViaLibusb()
 }
 
 func (d *darwinDetector) getDevicesViaSystemProfiler() ([]*models.USBDevice, error) {
@@ -62,6 +62,7 @@ func (d *darwinDetector) getDevicesViaSystemProfiler() ([]*models.USBDevice, err
 
 type spUSBController struct {
 	Name             string       `json:"_name"`
+	HostController   string       `json:"host_controller,omitempty"`
 	VendorID         string       `json:"vendor_id,omitempty"`
 	ProductID        string       `json:"product_id,omitempty"`
 	Manufacturer     string       `json:"manufacturer,omitempty"`
@@ -88,15 +89,28 @@ func (d *darwinDetector) createRootHubFromController(controller spUSBController,
 	vendorID := d.parseHexID(controller.VendorID)
 	productID := d.parseHexID(controller.ProductID)
 	
+	// Determine USB version from controller name and host controller
+	isUSB3 := strings.Contains(controller.Name, "31") || strings.Contains(controller.HostController, "XHCI")
+	
 	// Default to standard root hub IDs if not provided
 	if vendorID == 0 {
 		vendorID = 0x05ac // Apple Inc.
 	}
 	if productID == 0 {
-		if strings.Contains(controller.Name, "3.") || strings.Contains(controller.Name, "USB 3") {
+		if isUSB3 {
 			productID = 0x0003
 		} else {
 			productID = 0x0002
+		}
+	}
+	
+	// Create a more descriptive name for the root hub
+	hubName := controller.Name
+	if controller.HostController != "" {
+		if isUSB3 {
+			hubName = "USB 3.1 Root Hub"
+		} else {
+			hubName = "USB 2.0 Root Hub"
 		}
 	}
 
@@ -104,7 +118,7 @@ func (d *darwinDetector) createRootHubFromController(controller spUSBController,
 		VendorID:    vendorID,
 		ProductID:   productID,
 		VendorName:  controller.Manufacturer,
-		ProductName: controller.Name,
+		ProductName: hubName,
 		Bus:         busNumber,
 		Address:     1,
 		Port:        0,
@@ -116,6 +130,15 @@ func (d *darwinDetector) createRootHubFromController(controller spUSBController,
 
 	if rootHub.VendorName == "" {
 		rootHub.VendorName = "Apple Inc."
+	}
+	
+	// Set appropriate speed for the root hub
+	if rootHub.Speed == "Unknown" || rootHub.Speed == "" {
+		if isUSB3 {
+			rootHub.Speed = "Super (5 Gbps)"
+		} else {
+			rootHub.Speed = "High (480 Mbps)"
+		}
 	}
 
 	if controller.CurrentAvailable != "" {
