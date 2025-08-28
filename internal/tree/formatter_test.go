@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/user/usbtree/internal/models"
+	"github.com/stegmannb/usbtree/internal/models"
 )
 
 func TestFormatter_FormatDevice(t *testing.T) {

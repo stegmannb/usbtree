@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/user/usbtree/cmd"
+	"github.com/stegmannb/usbtree/cmd"
 )
 
 func main() {

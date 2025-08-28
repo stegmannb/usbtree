@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
-	"github.com/user/usbtree/internal/models"
+	"github.com/stegmannb/usbtree/internal/models"
 )
 
 type Printer struct {

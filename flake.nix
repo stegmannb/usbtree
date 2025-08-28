@@ -12,29 +12,31 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         # Main package definition
-        usbtree = pkgs.buildGoModule {
+        usbtree = pkgs.buildGoModule rec {
           pname = "usbtree";
-          version = "1.0.0";
+          version = "1.1.0";
 
           src = ./.;
 
-          vendorHash = "sha256-AFdBY34NEZIY781dmA76h7cMfRdsv5xu2RyeYGH+ZLw=";
+          vendorHash = "sha256-R8PGiiPyDzHWXgIFeJXQ28dJd0jDr8FZM7HajodDv0Y=";
 
-          nativeBuildInputs = [ pkgs.pkg-config ];
-          buildInputs = [ pkgs.libusb1 ];
+          # No longer need libusb
+          nativeBuildInputs = [ ];
+          buildInputs = [ ];
 
-          # Enable CGO for libusb
-          env.CGO_ENABLED = "1";
+          # CGO no longer required
+          env.CGO_ENABLED = "0";
 
-          # Build flags
+          # Build flags with version injection
           ldflags = [
             "-s"
             "-w"
+            "-X github.com/stegmannb/usbtree/cmd.version=${version}"
           ];
 
           meta = with pkgs.lib; {
             description = "A cross-platform CLI tool that displays connected USB devices in a hierarchical tree structure";
-            homepage = "https://github.com/user/usbtree";
+            homepage = "https://github.com/stegmannb/usbtree";
             license = licenses.mit;
             maintainers = [ ];
             mainProgram = "usbtree";
@@ -63,9 +65,7 @@
             go-tools
             delve
 
-            # Build dependencies
-            libusb1
-            pkg-config
+            # Build dependencies (no longer need libusb)
 
             # Additional dev tools
             git
@@ -84,16 +84,14 @@
             echo "  nix run               - Run with Nix"
             echo ""
             echo "🔧 System info:"
-            echo "  libusb-1.0: $(pkg-config --modversion libusb-1.0 2>/dev/null || echo 'not found')"
+            echo "  libusb:     Not required (using native OS commands)"
             echo "  Go version: $(go version | cut -d' ' -f3)"
             echo "  Platform:   ${system}"
             echo ""
           '';
 
-          # Set environment variables for CGO
-          CGO_ENABLED = "1";
-          PKG_CONFIG_PATH = "${pkgs.libusb1.dev}/lib/pkgconfig";
-          LD_LIBRARY_PATH = "${pkgs.libusb1.out}/lib";
+          # CGO no longer needed
+          CGO_ENABLED = "0";
         };
 
         # Packages
@@ -114,14 +112,12 @@
             {
               nativeBuildInputs = with pkgs; [
                 go
-                pkg-config
               ];
-              buildInputs = [ pkgs.libusb1 ];
+              buildInputs = [ ];
               src = ./.;
             } ''
             cd $src
-            export CGO_ENABLED=1
-            export PKG_CONFIG_PATH="${pkgs.libusb1.dev}/lib/pkgconfig"
+            export CGO_ENABLED=0
             go test ./...
             touch $out
           '';

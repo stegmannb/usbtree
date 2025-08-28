@@ -38,13 +38,13 @@ sudo pacman -S libusb
 ## Installation
 
 ```bash
-go install github.com/user/usbtree@latest
+go install github.com/stegmannb/usbtree@latest
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/user/usbtree
+git clone https://github.com/stegmannb/usbtree
 cd usbtree
 go build -o usbtree
 ```

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/user/usbtree/internal/models"
+	"github.com/stegmannb/usbtree/internal/models"
 )
 
 // MockDetector implements the Detector interface for testing

@@ -1,6 +1,6 @@
 package usb
 
-import "github.com/user/usbtree/internal/models"
+import "github.com/stegmannb/usbtree/internal/models"
 
 type Detector interface {
 	GetDevices() ([]*models.USBDevice, error)

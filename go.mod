@@ -1,4 +1,4 @@
-module github.com/user/usbtree
+module github.com/stegmannb/usbtree
 
 go 1.24
 
